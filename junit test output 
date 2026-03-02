@@ -1,0 +1,97 @@
+💚 Thanks for using JUnit! Support its development at https://junit.org/sponsoring
+
+╷
+├─ JUnit Jupiter ✔
+│  ├─ BoardTest ✔
+│  │  ├─ hasWon_leftColumn_returnsTrue() ✔
+│  │  ├─ hasWon_partialRow_returnsFalse() ✔
+│  │  ├─ isFull_oneCellEmpty_returnsFalse() ✔
+│  │  ├─ hasWon_middleColumn_returnsTrue() ✔
+│  │  ├─ hasWon_mainDiagonal_returnsTrue() ✔
+│  │  ├─ placeMarker_negativeCell_returnsFalse() ✔
+│  │  ├─ newBoard_cellsAreNumbered1Through9() ✔
+│  │  ├─ newBoard_noOneHasWon() ✔
+│  │  ├─ placeMarker_validCell_returnsTrue() ✔
+│  │  ├─ hasWon_middleRow_returnsTrue() ✔
+│  │  ├─ reset_clearsAllMarkers() ✔
+│  │  ├─ hasWon_bottomRow_returnsTrue() ✔
+│  │  ├─ placeMarker_cellAlreadyTaken_returnsFalse() ✔
+│  │  ├─ placeMarker_allNineCells_allAccepted() ✔
+│  │  ├─ hasWon_rightColumn_returnsTrue() ✔
+│  │  ├─ placeMarker_cellNumberTen_returnsFalse() ✔
+│  │  ├─ placeMarker_validCell_updatesTheCellValue() ✔
+│  │  ├─ newBoard_isNotFull() ✔
+│  │  ├─ placeMarker_cellAlreadyTaken_doesNotOverwrite() ✔
+│  │  ├─ hasWon_antiDiagonal_returnsTrue() ✔
+│  │  ├─ isFull_allCellsMarked_returnsTrue() ✔
+│  │  ├─ reset_boardIsNoLongerFull() ✔
+│  │  ├─ hasWon_mixedRow_returnsFalse() ✔
+│  │  ├─ hasWon_topRow_returnsTrue() ✔
+│  │  └─ placeMarker_cellNumberZero_returnsFalse() ✔
+│  ├─ GameTest ✔
+│  │  ├─ takeTurn_takenCell_returnsFalse() ✔
+│  │  ├─ reset_statusReturnsToInProgress() ✔
+│  │  ├─ reset_isNotOver() ✔
+│  │  ├─ takeTurn_playerOneWinsDiagonal_statusUpdated() ✔
+│  │  ├─ takeTurn_fullBoardNoWinner_isDraw() ✔
+│  │  ├─ newGame_firstTurnBelongsToPlayerOne() ✔
+│  │  ├─ takeTurn_playerTwoMoves_switchesBackToPlayerOne() ✔
+│  │  ├─ reset_currentPlayerReturnsToPlayerOne() ✔
+│  │  ├─ reset_previousCellsCanBePlayedAgain() ✔
+│  │  ├─ takeTurn_afterValidMove_switchesToPlayerTwo() ✔
+│  │  ├─ takeTurn_validMove_returnsTrue() ✔
+│  │  ├─ takeTurn_playerOneWinsTopRow_statusUpdated() ✔
+│  │  ├─ takeTurn_playerTwoWinsColumn_statusUpdated() ✔
+│  │  ├─ takeTurn_takenCell_doesNotSwitchPlayer() ✔
+│  │  ├─ takeTurn_outOfRangeCell_returnsFalse() ✔
+│  │  ├─ newGame_statusIsInProgress() ✔
+│  │  ├─ takeTurn_noMoreMovesAfterWin() ✔
+│  │  └─ newGame_isNotOver() ✔
+│  └─ InputValidatorTest ✔
+│     ├─ parseCellNumber_digitWithSymbol_returnsNegativeOne() ✔
+│     ├─ parsePlayAgain_yes_withWhitespace_returnsTrue() ✔
+│     ├─ parsePlayAgain_lowercase_no_returnsFalse() ✔
+│     ├─ parsePlayAgain_number_returnsNull() ✔
+│     ├─ parseCellNumber_justEnterNoInput_returnsNegativeOne() ✔
+│     ├─ parsePlayAgain_null_returnsNull() ✔
+│     ├─ parsePlayAgain_randomWord_returnsNull() ✔
+│     ├─ parseCellNumber_negativeNumber_returnsNegativeOne() ✔
+│     ├─ parseCellNumber_emptyString_returnsNegativeOne() ✔
+│     ├─ parsePlayAgain_uppercase_YES_returnsTrue() ✔
+│     ├─ parsePlayAgain_no_withWhitespace_returnsFalse() ✔
+│     ├─ parseCellNumber_leadingAndTrailingWhitespace_trimmedAndParsed() ✔
+│     ├─ parseCellNumber_whitespaceOnly_returnsNegativeOne() ✔
+│     ├─ parseCellNumber_decimalWithNoFraction_returnsNegativeOne() ✔
+│     ├─ parseCellNumber_ten_returnsNegativeOne() ✔
+│     ├─ parsePlayAgain_whitespaceOnly_returnsNull() ✔
+│     ├─ parsePlayAgain_empty_returnsNull() ✔
+│     ├─ parseCellNumber_decimalNumber_returnsNegativeOne() ✔
+│     ├─ parsePlayAgain_lowercase_n_returnsFalse() ✔
+│     ├─ parseCellNumber_letters_returnsNegativeOne() ✔
+│     ├─ parsePlayAgain_uppercase_Y_returnsTrue() ✔
+│     ├─ parsePlayAgain_lowercase_y_returnsTrue() ✔
+│     ├─ parseCellNumber_singleLetter_returnsNegativeOne() ✔
+│     ├─ parseCellNumber_1through9_returnsCorrectValue() ✔
+│     ├─ parseCellNumber_null_returnsNegativeOne() ✔
+│     ├─ parsePlayAgain_symbols_returnsNull() ✔
+│     ├─ parsePlayAgain_uppercase_N_returnsFalse() ✔
+│     ├─ parseCellNumber_specialSymbols_returnsNegativeOne() ✔
+│     ├─ parseCellNumber_zero_returnsNegativeOne() ✔
+│     ├─ parseCellNumber_largeNumber_returnsNegativeOne() ✔
+│     └─ parsePlayAgain_lowercase_yes_returnsTrue() ✔
+├─ JUnit Vintage ✔
+└─ JUnit Platform Suite ✔
+
+Test run finished after 272 ms
+[         6 containers found      ]
+[         0 containers skipped    ]
+[         6 containers started    ]
+[         0 containers aborted    ]
+[         6 containers successful ]
+[         0 containers failed     ]
+[        74 tests found           ]
+[         0 tests skipped         ]
+[        74 tests started         ]
+[         0 tests aborted         ]
+[        74 tests successful      ]
+[         0 tests failed          ]
