@@ -6,7 +6,6 @@
  *   - Delegate moves to the Board
  *   - Detect wins and draws
  *   - Expose game status via the Status enum
- *   - Support a configurable starting player (for loser-goes-first rule)
  *
  * Does NOT handle any I/O — that lives in App.java.
  */
@@ -27,19 +26,17 @@ public class Game {
     private final Player playerOne;
     private final Player playerTwo;
 
-    private Player startingPlayer;   // who goes first this round
     private Player currentPlayer;
     private Status status;
 
     // ── Constructor ──────────────────────────────────────────────────────────
 
     public Game(Player playerOne, Player playerTwo) {
-        this.board          = new Board();
-        this.playerOne      = playerOne;
-        this.playerTwo      = playerTwo;
-        this.startingPlayer = playerOne;   // Player 1 goes first by default
-        this.currentPlayer  = playerOne;
-        this.status         = Status.IN_PROGRESS;
+        this.board     = new Board();
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+        this.currentPlayer = playerOne;
+        this.status    = Status.IN_PROGRESS;
     }
 
     // ── Core action ──────────────────────────────────────────────────────────
@@ -66,19 +63,8 @@ public class Game {
     /** Resets the board and game state so a new round can begin. */
     public void reset() {
         board.reset();
-        currentPlayer = startingPlayer;
+        currentPlayer = playerOne;
         status        = Status.IN_PROGRESS;
-    }
-
-    /**
-     * Sets the player who will move first in the next round, then resets.
-     * Call this before starting a new round to enforce the loser-goes-first rule.
-     *
-     * @param firstPlayer must be either playerOne or playerTwo
-     */
-    public void resetWithFirstPlayer(Player firstPlayer) {
-        this.startingPlayer = firstPlayer;
-        reset();
     }
 
     // ── Getters ──────────────────────────────────────────────────────────────

@@ -35,6 +35,32 @@ public class InputValidator {
         }
     }
 
+    // ── Menu choice ──────────────────────────────────────────────────────────
+
+    /**
+     * Parses a raw string into a menu selection in the range [1, maxOption].
+     *
+     * Rejects anything that is not a plain positive integer within range.
+     *
+     * @param input     raw user input
+     * @param maxOption the highest valid option number (inclusive)
+     * @return the chosen integer on success, or -1 on any invalid input
+     */
+    public static int parseMenuChoice(String input, int maxOption) {
+        if (input == null || input.trim().isEmpty()) return -1;
+
+        String trimmed = input.trim();
+
+        if (!trimmed.matches("[0-9]+")) return -1;
+
+        try {
+            int value = Integer.parseInt(trimmed);
+            return (value >= 1 && value <= maxOption) ? value : -1;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     // ── Play-again prompt ────────────────────────────────────────────────────
 
     /**

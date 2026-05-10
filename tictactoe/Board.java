@@ -50,6 +50,18 @@ public class Board {
         return true;
     }
 
+    /**
+     * Removes a marker from a cell, restoring its digit label.
+     * Used internally by ComputerPlayer to test moves without committing them.
+     *
+     * @param cellNumber 1–9 (must currently hold 'X' or 'O')
+     */
+    public void undoMarker(int cellNumber) {
+        if (isInRange(cellNumber)) {
+            cells[cellNumber - 1] = (char) ('0' + cellNumber);
+        }
+    }
+
     // ── State queries ────────────────────────────────────────────────────────
 
     /** Returns true if the given marker fills an entire row, column, or diagonal. */

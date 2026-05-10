@@ -4,7 +4,6 @@ import java.util.Scanner;
  * App.java — the entry point and sole I/O layer.
  *
  * All game logic lives in Game, Board, Player, and InputValidator.
- * Statistics tracking lives in GameLog.
  * This class only reads from the console and writes to it.
  *
  * Compile:  javac *.java
@@ -15,54 +14,83 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        Player  playerOne = new Player("Player 1", 'X');
-        Player  playerTwo = new Player("Player 2", 'O');
-        Game    game      = new Game(playerOne, playerTwo);
-        GameLog log       = new GameLog(playerOne, playerTwo);
-
         printWelcome();
+
+        // GameLog is created once per session and shared across all rounds
+        GameLog log = null;
 
         boolean keepPlaying = true;
         while (keepPlaying) {
-            playOneGame(game, scanner);
+            Game game = buildGame(scanner);
 
-            // Record the result and show the updated scoreboard
+            // Create the log on the first round, using whoever the players are
+            if (log == null) {
+                log = new GameLog(game.getPlayerOne(), game.getPlayerTwo());
+            }
+
+            playOneGame(game, scanner);
             log.record(game.getStatus());
+
             System.out.println(log.getSummary());
-            System.out.println();
 
             keepPlaying = askPlayAgain(scanner);
             if (keepPlaying) {
-                // Loser goes first next round; draws keep the same starting order
-                Player nextFirst = determineNextFirstPlayer(game);
-                game.resetWithFirstPlayer(nextFirst);
-                System.out.println("\n--- New game started! " + nextFirst + " goes first. ---");
+                game.reset();
+                System.out.println("\n--- New game started! ---");
             }
         }
 
-        // Save game log to disk before exiting
-        String savedPath = log.saveToFile();
-        System.out.println("\nGame log saved to: " + savedPath);
-        System.out.println("Thanks for playing! Goodbye.\n");
+        // Save log to file at the end of the session
+        if (log != null) {
+            String saved = log.saveToFile();
+            System.out.println("Game log saved to: " + saved);
+        }
+
+        System.out.println("\nThanks for playing! Goodbye.\n");
         scanner.close();
     }
 
-    // ── Turn order helper ─────────────────────────────────────────────────────
+    // ── Pre-game menu ─────────────────────────────────────────────────────────
 
-    /**
-     * Returns the player who should go first in the next round.
-     * The loser goes first; on a draw the current starting player is unchanged
-     * (which defaults back to Player 1 via the existing reset logic).
-     */
-    private static Player determineNextFirstPlayer(Game game) {
-        switch (game.getStatus()) {
-            case PLAYER_ONE_WINS:
-                return game.getPlayerTwo();   // P2 lost → P2 goes first
-            case PLAYER_TWO_WINS:
-                return game.getPlayerOne();   // P1 lost → P1 goes first
-            default:
-                // Draw — keep Player 1 as the default first player
-                return game.getPlayerOne();
+    private static Game buildGame(Scanner scanner) {
+        int modeChoice = askMenuChoice(
+                scanner,
+                "Choose game mode:\n  1) Human vs Human\n  2) Human vs Computer",
+                2
+        );
+
+        Player playerOne;
+        Player playerTwo;
+
+        if (modeChoice == 1) {
+            playerOne = new Player("Player 1", 'X');
+            playerTwo = new Player("Player 2", 'O');
+        } else {
+            int orderChoice = askMenuChoice(
+                    scanner,
+                    "Should the computer go first or second?\n  1) Computer goes first\n  2) Computer goes second",
+                    2
+            );
+
+            if (orderChoice == 1) {
+                playerOne = new ComputerPlayer("Computer", 'X');
+                playerTwo = new Player("Player", 'O');
+            } else {
+                playerOne = new Player("Player", 'X');
+                playerTwo = new ComputerPlayer("Computer", 'O');
+            }
+        }
+
+        return new Game(playerOne, playerTwo);
+    }
+
+    private static int askMenuChoice(Scanner scanner, String prompt, int maxOption) {
+        while (true) {
+            System.out.println(prompt);
+            System.out.print("Enter choice (1-" + maxOption + "): ");
+            int choice = InputValidator.parseMenuChoice(scanner.nextLine(), maxOption);
+            if (choice != -1) return choice;
+            System.out.println("  ! Invalid choice. Please enter a number between 1 and " + maxOption + ".");
         }
     }
 
@@ -73,8 +101,33 @@ public class App {
 
         while (!game.isOver()) {
             Player current = game.getCurrentPlayer();
-            System.out.print(current + " — enter a cell (1-9): ");
 
+            if (current instanceof ComputerPlayer) {
+                takeComputerTurn(game);
+            } else {
+                takeHumanTurn(game, scanner, current);
+            }
+
+            System.out.println(game.getBoard());
+        }
+
+        printResult(game);
+    }
+
+    private static void takeComputerTurn(Game game) {
+        Player computer = game.getCurrentPlayer();
+        Player opponent = (computer == game.getPlayerOne())
+                ? game.getPlayerTwo()
+                : game.getPlayerOne();
+
+        int cell = ((ComputerPlayer) computer).chooseCell(game.getBoard(), opponent.getMarker());
+        System.out.println(computer + " chooses cell " + cell + ".");
+        game.takeTurn(cell);
+    }
+
+    private static void takeHumanTurn(Game game, Scanner scanner, Player current) {
+        while (true) {
+            System.out.print(current + " — enter a cell (1-9): ");
             String raw  = scanner.nextLine();
             int    cell = InputValidator.parseCellNumber(raw);
 
@@ -91,10 +144,8 @@ public class App {
                 continue;
             }
 
-            System.out.println(game.getBoard());
+            break;
         }
-
-        printResult(game);
     }
 
     // ── Output helpers ────────────────────────────────────────────────────────
@@ -102,7 +153,6 @@ public class App {
     private static void printWelcome() {
         System.out.println("================================");
         System.out.println("       Welcome to Tic-Tac-Toe  ");
-        System.out.println("    Player 1 = X  |  Player 2 = O");
         System.out.println("================================");
         System.out.println("Cells are numbered 1-9:");
         System.out.println("   1 | 2 | 3");

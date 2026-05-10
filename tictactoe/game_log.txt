@@ -1,24 +1,20 @@
 ========================================
          TIC-TAC-TOE GAME LOG          
 ========================================
-Session saved: 2026-04-05 22:05:45
+Session saved: 2026-05-10 21:45:59
 
 Players
-  Player 1 (X)
-  Player 2 (O)
+  Computer (X)
+  Player (O)
 
 Round-by-Round Results
 ----------------------------------------
-  Round  1 : Player 1 (X) wins
-  Round  2 : Player 2 (O) wins
-  Round  3 : Player 1 (X) wins
-  Round  4 : Player 2 (O) wins
-  Round  5 : Draw
+  Round  1 : Draw
 
 Final Totals
 ----------------------------------------
-  Player 1 (X):          2 wins
-  Player 2 (O):          2 wins
+  Computer (X):          0 wins
+  Player (O):            0 wins
   Draws:                 1
-  Total rounds played:   5
+  Total rounds played:   1
 ========================================

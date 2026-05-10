@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * Covers every validation rule described in the assignment:
  * null, empty, whitespace-only, valid digits, out-of-range,
- * decimals, letters, symbols, negative numbers, and play-again parsing.
+ * decimals, letters, symbols, negative numbers, play-again parsing,
+ * and menu-choice parsing.
  */
 class InputValidatorTest {
 
@@ -181,5 +182,79 @@ class InputValidatorTest {
     @Test
     void parsePlayAgain_symbols_returnsNull() {
         assertNull(InputValidator.parsePlayAgain("!?"));
+    }
+
+    // ── parseMenuChoice – valid inputs ────────────────────────────────────────
+
+    @Test
+    void parseMenuChoice_validChoice_returnsValue() {
+        assertEquals(1, InputValidator.parseMenuChoice("1", 2));
+        assertEquals(2, InputValidator.parseMenuChoice("2", 2));
+    }
+
+    @Test
+    void parseMenuChoice_whitespace_trimmedAndParsed() {
+        assertEquals(1, InputValidator.parseMenuChoice("  1  ", 2));
+    }
+
+    @Test
+    void parseMenuChoice_maxOption_returnsValue() {
+        assertEquals(5, InputValidator.parseMenuChoice("5", 5));
+    }
+
+    // ── parseMenuChoice – out-of-range ───────────────────────────────────────
+
+    @Test
+    void parseMenuChoice_zero_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("0", 2));
+    }
+
+    @Test
+    void parseMenuChoice_aboveMax_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("3", 2));
+    }
+
+    @Test
+    void parseMenuChoice_largeNumber_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("999", 2));
+    }
+
+    // ── parseMenuChoice – null / blank ───────────────────────────────────────
+
+    @Test
+    void parseMenuChoice_null_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice(null, 2));
+    }
+
+    @Test
+    void parseMenuChoice_emptyString_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("", 2));
+    }
+
+    @Test
+    void parseMenuChoice_whitespaceOnly_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("   ", 2));
+    }
+
+    // ── parseMenuChoice – letters / symbols ──────────────────────────────────
+
+    @Test
+    void parseMenuChoice_letters_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("abc", 2));
+    }
+
+    @Test
+    void parseMenuChoice_negativeNumber_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("-1", 2));
+    }
+
+    @Test
+    void parseMenuChoice_decimal_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("1.0", 2));
+    }
+
+    @Test
+    void parseMenuChoice_symbols_returnsNegativeOne() {
+        assertEquals(-1, InputValidator.parseMenuChoice("!!", 2));
     }
 }
